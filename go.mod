@@ -1,4 +1,4 @@
-module lunaryx-org/refx
+module github.com/Lunaryx-org/refx
 
 go 1.25.1
 

@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"lunaryx-org/refx/shared"
 	"os"
+
+	"github.com/Lunaryx-org/refx/shared"
 
 	"github.com/spf13/cobra"
 )
