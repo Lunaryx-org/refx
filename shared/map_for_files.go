@@ -7,6 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/fatih/color"
 )
 
 func mapForFiles() ([]string, error) {
@@ -38,10 +40,13 @@ func mapForFiles() ([]string, error) {
 }
 
 func readFile(goFiles []string, old_arg, new_arg string) error {
+	lenght := len(goFiles)
+	deleted := color.RGB(232, 90, 102)
+	added := color.RGB(121, 232, 90)
+
 	var fileLines string
 	for _, filePath := range goFiles {
 		readFile, err := os.OpenFile(filePath, os.O_RDONLY, 0644)
-		fmt.Fprintf(os.Stdout, "Working on: %s\n", filePath)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Couldn't open file: %s", filePath)
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
@@ -80,24 +85,29 @@ func readFile(goFiles []string, old_arg, new_arg string) error {
 		tempFile.Close()
 		readFile.Close()
 
-		fmt.Fprintf(os.Stdout, "Renaming: %s\n", temp_file_path)
-		fmt.Fprintf(os.Stdout, "To: %s\n", filePath)
 		err = os.Rename(temp_file_path, filePath)
 		if err != nil {
 			return err
 		}
 	}
 
+	fmt.Fprintf(os.Stdout, "+ ")
+	added.Fprintf(os.Stdout, "%s\n", new_arg)
+	fmt.Fprintf(os.Stdout, "- ")
+	deleted.Fprintf(os.Stdout, "%s\n", old_arg)
+	fmt.Fprintf(os.Stdout, "%d", lenght)
+	fmt.Fprintf(os.Stdout, " files modified\n")
+
 	return nil
 }
 
-func Fileio(old_arg, new_arg string) {
+func Fileio(oldArg, newArg string) {
 	arr, err := mapForFiles()
 	if err != nil {
 		fmt.Print("error: ", err)
 	}
 
-	err = readFile(arr, old_arg, new_arg)
+	err = readFile(arr, oldArg, newArg)
 	if err != nil {
 		fmt.Print("Error \n", err)
 	}
