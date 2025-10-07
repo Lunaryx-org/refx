@@ -10,7 +10,7 @@ import (
 )
 
 func mapForFiles() ([]string, error) {
-	var go_files []string
+	var goFiles []string
 	working_directory, err := os.Getwd()
 	if err != nil {
 		return nil, err
@@ -28,22 +28,22 @@ func mapForFiles() ([]string, error) {
 
 		// Check if it's a .go file
 		if filepath.Ext(path) == ".go" {
-			go_files = append(go_files, path)
+			goFiles = append(goFiles, path)
 		}
 
 		return nil
 	})
 
-	return go_files, err
+	return goFiles, err
 }
 
-func readFile(go_files []string, old_arg, new_arg string) error {
+func readFile(goFiles []string, old_arg, new_arg string) error {
 	var fileLines string
-	for _, file_path := range go_files {
-		readFile, err := os.OpenFile(file_path, os.O_RDONLY, 0644)
-		fmt.Fprintf(os.Stdout, "Working on: %s\n", file_path)
+	for _, filePath := range goFiles {
+		readFile, err := os.OpenFile(filePath, os.O_RDONLY, 0644)
+		fmt.Fprintf(os.Stdout, "Working on: %s\n", filePath)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Couldn't open file: %s", file_path)
+			fmt.Fprintf(os.Stderr, "Couldn't open file: %s", filePath)
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			readFile.Close()
 			return err
@@ -52,8 +52,8 @@ func readFile(go_files []string, old_arg, new_arg string) error {
 		// Make a map to make a atomic change
 		//key will be the name of the temp file, and the value will be the original name
 		fileKeyVal := make(map[string]string)
-		temp_file_path := file_path + ".temp"
-		fileKeyVal[temp_file_path] = file_path
+		temp_file_path := filePath + ".temp"
+		fileKeyVal[temp_file_path] = filePath
 
 		fileScanner := bufio.NewScanner(readFile)
 		fileScanner.Split(bufio.ScanLines)
@@ -81,8 +81,8 @@ func readFile(go_files []string, old_arg, new_arg string) error {
 		readFile.Close()
 
 		fmt.Fprintf(os.Stdout, "Renaming: %s\n", temp_file_path)
-		fmt.Fprintf(os.Stdout, "To: %s\n", file_path)
-		err = os.Rename(temp_file_path, file_path)
+		fmt.Fprintf(os.Stdout, "To: %s\n", filePath)
+		err = os.Rename(temp_file_path, filePath)
 		if err != nil {
 			return err
 		}
