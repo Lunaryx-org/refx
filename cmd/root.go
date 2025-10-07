@@ -13,14 +13,11 @@ var rootCmd = &cobra.Command{
 	Use:   "refx [old-path] [new-path]",
 	Short: "Replace Go import paths across your project",
 	Long:  `refx replaces import paths in all .go files in the current directory`,
-	Args:  cobra.ExactArgs(2), // Requires exactly 2 arguments
+	Args:  cobra.ExactArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		oldPath := args[0]
 		newPath := args[1]
 
-		fmt.Println("old_path:	", oldPath)
-		fmt.Println("new_path:	", newPath)
-		// Call your actual logic here
 		shared.Fileio(oldPath, newPath)
 	},
 }

@@ -41,8 +41,10 @@ func readFile(go_files []string, old_arg, new_arg string) error {
 	var fileLines string
 	for _, file_path := range go_files {
 		readFile, err := os.OpenFile(file_path, os.O_RDONLY, 0644)
+		fmt.Fprintf(os.Stdout, "Working on: %s\n", file_path)
 		if err != nil {
-			fmt.Println("Couldn't open file: ", readFile, "Error: ", err)
+			fmt.Fprintf(os.Stderr, "Couldn't open file: %s", file_path)
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			readFile.Close()
 			return err
 		}
@@ -69,10 +71,8 @@ func readFile(go_files []string, old_arg, new_arg string) error {
 
 			if strings.Contains(fileLines, old_arg) {
 				fileLines = strings.ReplaceAll(fileLines, old_arg, new_arg)
-				fmt.Println("✓ Replaced:", fileLines) // Debug
 			}
 
-			// ALWAYS write the line (whether replaced or not)
 			fileLines = fileLines + "\n"
 			tempFile.Write([]byte(fileLines))
 
@@ -80,13 +80,13 @@ func readFile(go_files []string, old_arg, new_arg string) error {
 		tempFile.Close()
 		readFile.Close()
 
+		fmt.Fprintf(os.Stdout, "Renaming: %s\n", temp_file_path)
+		fmt.Fprintf(os.Stdout, "To: %s\n", file_path)
 		err = os.Rename(temp_file_path, file_path)
 		if err != nil {
 			return err
 		}
 	}
-
-	fmt.Println(fileLines)
 
 	return nil
 }
