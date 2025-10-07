@@ -43,6 +43,7 @@ func readFile(go_files []string, old_arg, new_arg string) error {
 		readFile, err := os.OpenFile(file_path, os.O_RDONLY, 0644)
 		if err != nil {
 			fmt.Println("Couldn't open file: ", readFile, "Error: ", err)
+			readFile.Close()
 			return err
 		}
 
@@ -58,6 +59,7 @@ func readFile(go_files []string, old_arg, new_arg string) error {
 		tempFile, err := os.OpenFile(temp_file_path, os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			fmt.Println("Error opening the tempfile", err)
+			tempFile.Close()
 			return err
 		}
 

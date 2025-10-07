@@ -10,9 +10,9 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "img [old-path] [new-path]",
+	Use:   "refx [old-path] [new-path]",
 	Short: "Replace Go import paths across your project",
-	Long:  `img replaces import paths in all .go files in the current directory`,
+	Long:  `refx replaces import paths in all .go files in the current directory`,
 	Args:  cobra.ExactArgs(2), // Requires exactly 2 arguments
 	Run: func(cmd *cobra.Command, args []string) {
 		oldPath := args[0]
