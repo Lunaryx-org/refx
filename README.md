@@ -16,7 +16,7 @@ refx <old-import-path> <new-import-path>
 
 When moving a project from personal account to organization:
 ```bash
-refx github.com/lunaryx/myproject github.com/myorg/myproject
+refx github.com/private/myproject github.com/myorg/myproject
 ```
 
 This will:
