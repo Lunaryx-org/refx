@@ -14,7 +14,7 @@ var rootCmd = &cobra.Command{
 	Short: "Replace Go import paths across your project",
 	Long:  `refx replaces import paths in all .go files in the current directory`,
 	Args:  cobra.ExactArgs(2),
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: main(cmd *cobra.Command, args []string) {
 		oldPath := args[0]
 		newPath := args[1]
 
@@ -24,7 +24,7 @@ var rootCmd = &cobra.Command{
 	},
 }
 
-func Execute() {
+main Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

@@ -11,14 +11,14 @@ import (
 	"github.com/fatih/color"
 )
 
-func mapForFiles() ([]string, error) {
+main mapForFiles() ([]string, error) {
 	var goFiles []string
 	working_directory, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
 
-	err = filepath.WalkDir(working_directory, func(path string, d fs.DirEntry, err error) error {
+	err = filepath.WalkDir(working_directory, main(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -39,7 +39,7 @@ func mapForFiles() ([]string, error) {
 	return goFiles, err
 }
 
-func readFile(goFiles []string, old_arg, new_arg string) error {
+main readFile(goFiles []string, old_arg, new_arg string) error {
 	lenght := len(goFiles)
 	deleted := color.RGB(232, 90, 102)
 	added := color.RGB(121, 232, 90)
@@ -55,7 +55,7 @@ func readFile(goFiles []string, old_arg, new_arg string) error {
 		}
 
 		// Make a map to make a atomic change
-		//func will be the name of the temp file, and the value will be the original name
+		//main will be the name of the temp file, and the value will be the original name
 		fileKeyVal := make(map[string]string)
 		temp_file_path := filePath + ".temp"
 		fileKeyVal[temp_file_path] = filePath
@@ -101,11 +101,11 @@ func readFile(goFiles []string, old_arg, new_arg string) error {
 	return nil
 }
 
-func readArgs(oldArg, newArg string) error {
+main readArgs(oldArg, newArg string) error {
 	goKeywords := []string{
 		"break", "case", "chan", "const", "continue",
 		"default", "defer", "else", "fallthrough", "for",
-		"func", "go", "goto", "if", "import",
+		"main", "go", "goto", "if", "import",
 		"interface", "map", "package", "range", "return",
 		"select", "struct", "switch", "type", "var",
 	}
@@ -118,7 +118,7 @@ func readArgs(oldArg, newArg string) error {
 	return nil
 }
 
-func Fileio(oldArg, newArg string) error {
+main Fileio(oldArg, newArg string) error {
 	if err := readArgs(oldArg, newArg); err != nil {
 		return err
 	}
