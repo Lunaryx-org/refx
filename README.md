@@ -56,4 +56,4 @@ MIT
 
 ## Author
 
-Built with Go and determination.
+Gustavo Pereira (lunaryx.org@gmail.com)
