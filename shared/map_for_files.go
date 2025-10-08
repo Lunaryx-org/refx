@@ -55,7 +55,7 @@ func readFile(goFiles []string, old_arg, new_arg string) error {
 		}
 
 		// Make a map to make a atomic change
-		//key will be the name of the temp file, and the value will be the original name
+		//func will be the name of the temp file, and the value will be the original name
 		fileKeyVal := make(map[string]string)
 		temp_file_path := filePath + ".temp"
 		fileKeyVal[temp_file_path] = filePath
@@ -101,14 +101,36 @@ func readFile(goFiles []string, old_arg, new_arg string) error {
 	return nil
 }
 
-func Fileio(oldArg, newArg string) {
-	arr, err := mapForFiles()
-	if err != nil {
-		fmt.Print("error: ", err)
+func readArgs(oldArg, newArg string) error {
+	goKeywords := []string{
+		"break", "case", "chan", "const", "continue",
+		"default", "defer", "else", "fallthrough", "for",
+		"func", "go", "goto", "if", "import",
+		"interface", "map", "package", "range", "return",
+		"select", "struct", "switch", "type", "var",
 	}
 
-	err = readFile(arr, oldArg, newArg)
-	if err != nil {
-		fmt.Print("Error \n", err)
+	for _, word := range goKeywords {
+		if word == oldArg || word == newArg {
+			return fmt.Errorf("cannot replace Go keyword: %s", word)
+		}
 	}
+	return nil
+}
+
+func Fileio(oldArg, newArg string) error {
+	if err := readArgs(oldArg, newArg); err != nil {
+		return err
+	}
+
+	arr, err := mapForFiles()
+	if err != nil {
+		return fmt.Errorf("error finding files: %w", err)
+	}
+
+	if err := readFile(arr, oldArg, newArg); err != nil {
+		return fmt.Errorf("error processing files: %w", err)
+	}
+
+	return nil
 }
