@@ -41,12 +41,14 @@ Each file is written to a temporary file first, then atomically renamed to repla
 
 ## Roadmap
 
-- [ ] Better output formatting with progress indicators
+- [x] Better output formatting with progress indicators
 - [ ] Automatic backup before making changes
 - [ ] Ignore golang keywords  
 - [ ] `--dry-run` flag to preview changes
 - [ ] Color-coded output
 - [ ] Statistics summary
+- [ ] Only work on files that have that import path / ignore irevelant golang files
+- [ ] Config file to apply rules if specified
 
 ## License
 
