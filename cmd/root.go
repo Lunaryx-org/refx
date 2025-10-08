@@ -18,7 +18,9 @@ var rootCmd = &cobra.Command{
 		oldPath := args[0]
 		newPath := args[1]
 
-		shared.Fileio(oldPath, newPath)
+		if err := shared.Fileio(oldPath, newPath); err != nil {
+			fmt.Fprintf(os.Stderr, "Error %s\n", err)
+		}
 	},
 }
 
