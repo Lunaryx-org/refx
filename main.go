@@ -1,7 +1,9 @@
 package main
 
-import "github.com/Lunaryx-org/refx/cmd"
+import (
+	"github.com/Lunaryx-org/refx/cmd"
+)
 
-main main() {
+func main() {
 	cmd.Execute()
 }
