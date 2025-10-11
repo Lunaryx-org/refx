@@ -40,12 +40,12 @@ refx scans all `.go` files recursively, finds lines containing the old import pa
 Each file is written to a temporary file first, then atomically renamed to replace the original. This ensures that if anything goes wrong, your original files remain intact.
 
 ## Roadmap
-- [ ] Add a verbose flag --verbose for more explained output
+- [x] Add a verbose flag --verbose for more explained output
 - [x] Better output formatting with progress indicators
 - [ ] Automatic backup before making changes
 - [x] Ignore golang keywords  
 - [ ] `--dry-run` flag to preview changes
-- [ ] Color-coded output
+- [x] Color-coded output
 - [ ] Statistics summary
 - [ ] Only work on files that have that import path / ignore irevelant golang files
 - [ ] Config file to apply rules if specified
