@@ -43,7 +43,7 @@ Each file is written to a temporary file first, then atomically renamed to repla
 - [ ] Add a verbose flag --verbose for more explained output
 - [x] Better output formatting with progress indicators
 - [ ] Automatic backup before making changes
-- [ ] Ignore golang keywords  
+- [x] Ignore golang keywords  
 - [ ] `--dry-run` flag to preview changes
 - [ ] Color-coded output
 - [ ] Statistics summary
