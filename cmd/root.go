@@ -9,6 +9,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	verbose bool
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "refx [old-path] [new-path]",
 	Short: "Replace Go import paths across your project",
@@ -18,9 +22,10 @@ var rootCmd = &cobra.Command{
 		oldPath := args[0]
 		newPath := args[1]
 
-		if err := shared.Fileio(oldPath, newPath); err != nil {
+		if err := shared.Fileio(oldPath, newPath, verbose); err != nil {
 			fmt.Fprintf(os.Stderr, "Error %s\n", err)
 		}
+
 	},
 }
 
@@ -29,4 +34,8 @@ func Execute() {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func init() {
+	rootCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose output")
 }

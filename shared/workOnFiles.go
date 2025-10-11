@@ -11,7 +11,15 @@ import (
 	"github.com/fatih/color"
 )
 
-func mapForFiles() ([]string, error) {
+func logVerbose(verbose bool, any ...interface{}) {
+	if verbose {
+		fmt.Print(any...)
+	}
+}
+
+func mapForFiles(verbose bool) ([]string, error) {
+	logVerbose(verbose, "==================================================================\n")
+	logVerbose(verbose, "==================================================================\n")
 	var goFiles []string
 	working_directory, err := os.Getwd()
 	if err != nil {
@@ -31,6 +39,7 @@ func mapForFiles() ([]string, error) {
 		// Check if it's a .go file
 		if filepath.Ext(path) == ".go" {
 			goFiles = append(goFiles, path)
+			logVerbose(verbose, "Found a golang file >:", path, '\n')
 		}
 
 		return nil
@@ -39,7 +48,7 @@ func mapForFiles() ([]string, error) {
 	return goFiles, err
 }
 
-func readFile(goFiles []string, old_arg, new_arg string) error {
+func readFile(goFiles []string, old_arg, new_arg string, verbose bool) error {
 	lenght := len(goFiles)
 	deleted := color.RGB(232, 90, 102)
 	added := color.RGB(121, 232, 90)
@@ -75,7 +84,9 @@ func readFile(goFiles []string, old_arg, new_arg string) error {
 			fileLines = fileScanner.Text()
 
 			if strings.Contains(fileLines, old_arg) {
+				logVerbose(verbose, fileLines, " => ")
 				fileLines = strings.ReplaceAll(fileLines, old_arg, new_arg)
+				logVerbose(verbose, fileLines, "\n")
 			}
 
 			fileLines = fileLines + "\n"
@@ -90,14 +101,16 @@ func readFile(goFiles []string, old_arg, new_arg string) error {
 			return err
 		}
 	}
-
-	fmt.Fprintf(os.Stdout, "+ ")
-	added.Fprintf(os.Stdout, "%s\n", new_arg)
-	fmt.Fprintf(os.Stdout, "- ")
-	deleted.Fprintf(os.Stdout, "%s\n", old_arg)
-	fmt.Fprintf(os.Stdout, "%d", lenght)
-	fmt.Fprintf(os.Stdout, " files modified\n")
-
+	logVerbose(verbose, "==================================================================\n")
+	logVerbose(verbose, "==================================================================\n")
+	if !verbose {
+		fmt.Fprintf(os.Stdout, "+ ")
+		added.Fprintf(os.Stdout, "%s\n", new_arg)
+		fmt.Fprintf(os.Stdout, "- ")
+		deleted.Fprintf(os.Stdout, "%s\n", old_arg)
+		fmt.Fprintf(os.Stdout, "%d", lenght)
+		fmt.Fprintf(os.Stdout, " files modified\n")
+	}
 	return nil
 }
 
@@ -118,17 +131,17 @@ func readArgs(oldArg, newArg string) error {
 	return nil
 }
 
-func Fileio(oldArg, newArg string) error {
+func Fileio(oldArg, newArg string, verbose bool) error {
 	if err := readArgs(oldArg, newArg); err != nil {
 		return err
 	}
 
-	arr, err := mapForFiles()
+	arr, err := mapForFiles(verbose)
 	if err != nil {
 		return fmt.Errorf("error finding files: %w", err)
 	}
 
-	if err := readFile(arr, oldArg, newArg); err != nil {
+	if err := readFile(arr, oldArg, newArg, verbose); err != nil {
 		return fmt.Errorf("error processing files: %w", err)
 	}
 
