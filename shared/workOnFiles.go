@@ -19,7 +19,6 @@ func logVerbose(verbose bool, any ...interface{}) {
 
 func mapForFiles(verbose bool) ([]string, error) {
 	logVerbose(verbose, "==================================================================\n")
-	logVerbose(verbose, "==================================================================\n")
 	var goFiles []string
 	working_directory, err := os.Getwd()
 	if err != nil {
@@ -49,7 +48,7 @@ func mapForFiles(verbose bool) ([]string, error) {
 }
 
 func readFile(goFiles []string, old_arg, new_arg string, verbose bool) error {
-	lenght := len(goFiles)
+	var touchedFiles []string
 	deleted := color.RGB(232, 90, 102)
 	added := color.RGB(121, 232, 90)
 
@@ -63,7 +62,7 @@ func readFile(goFiles []string, old_arg, new_arg string, verbose bool) error {
 			return err
 		}
 
-		// Make a map to make a atomic change
+		// Make a map to make a atomic cgitnge
 		//func will be the name of the temp file, and the value will be the original name
 		fileKeyVal := make(map[string]string)
 		temp_file_path := filePath + ".temp"
@@ -86,6 +85,7 @@ func readFile(goFiles []string, old_arg, new_arg string, verbose bool) error {
 			if strings.Contains(fileLines, old_arg) {
 				logVerbose(verbose, fileLines, " => ")
 				fileLines = strings.ReplaceAll(fileLines, old_arg, new_arg)
+				touchedFiles = append(touchedFiles, filePath)
 				logVerbose(verbose, fileLines, "\n")
 			}
 
@@ -102,7 +102,7 @@ func readFile(goFiles []string, old_arg, new_arg string, verbose bool) error {
 		}
 	}
 	logVerbose(verbose, "==================================================================\n")
-	logVerbose(verbose, "==================================================================\n")
+	lenght := len(touchedFiles)
 	if !verbose {
 		fmt.Fprintf(os.Stdout, "+ ")
 		added.Fprintf(os.Stdout, "%s\n", new_arg)
@@ -116,7 +116,7 @@ func readFile(goFiles []string, old_arg, new_arg string, verbose bool) error {
 
 func readArgs(oldArg, newArg string) error {
 	goKeywords := []string{
-		"break", "case", "chan", "const", "continue",
+		"break", "case", "cgitn", "const", "continue",
 		"default", "defer", "else", "fallthrough", "for",
 		"func", "go", "goto", "if", "import",
 		"interface", "map", "package", "range", "return",
@@ -132,6 +132,10 @@ func readArgs(oldArg, newArg string) error {
 }
 
 func Fileio(oldArg, newArg string, verbose bool) error {
+	if err := CreateBackup(); err != nil {
+		return err
+	}
+
 	if err := readArgs(oldArg, newArg); err != nil {
 		return err
 	}
