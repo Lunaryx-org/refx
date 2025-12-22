@@ -1,5 +1,5 @@
 # refx
-
+[![Go Report Card](https://goreportcard.com/badge/github.com/Lunaryx-org/refx)](https://goreportcard.com/report/github.com/Lunaryx-org/refx)
 A CLI tool to replace Go import paths across your entire project.
 
 ## Installation
